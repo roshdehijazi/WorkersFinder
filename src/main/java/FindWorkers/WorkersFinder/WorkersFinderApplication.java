@@ -14,7 +14,7 @@ public class WorkersFinderApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:4200")  // Your Angular frontend
+						.allowedOrigins("http://localhost:3000")  // Your Angular frontend
 						.allowedMethods("GET", "POST", "PUT", "DELETE")
 						.allowedHeaders("*")
 						.allowCredentials(true);  // This should be inside the addCorsMappings method
