@@ -1,33 +1,34 @@
 package FindWorkers.WorkersFinder;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.security.core.GrantedAuthority;
-@Entity
-@Table(name = "users")
+import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.index.Indexed;
+
+@Document(collection = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotBlank(message = "username is required")
-    @Column(nullable = false, unique = true, length = 50)
+    @Field("username")
+    @Size(max = 50, message = "Username must be ≤50 characters")
     private String username;
 
     @ValidEmail
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
-    @Column(nullable = false, unique = true, length = 100)
+    @Field("email")
     private String email;
 
     @NotBlank(message = "password is required")
-    @Column(nullable = false)
+    @Field("password")
     private String password;
 
-    @Column(nullable = false)
+    @Field("role")
     private String role;
-
+    @Field("category")
     private String category;
 
     // Constructors
@@ -42,8 +43,7 @@ public class User {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

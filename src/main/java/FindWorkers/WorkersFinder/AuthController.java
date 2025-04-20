@@ -1,7 +1,6 @@
 package FindWorkers.WorkersFinder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
-    private final UserService userService;
+    @Autowired
+    private  UserService userService;
     @Autowired
     private UserRepository userRepository;
 
@@ -23,14 +22,11 @@ public class AuthController {
             return false;
         }
 
-        // Check if raw password matches the hashed password
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody loginRequest loginRequest) {
