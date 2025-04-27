@@ -1,4 +1,6 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.Users;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private  UserService userService;
+    private UserService userService;
     @Autowired
     private UserRepository userRepository;
 

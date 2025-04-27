@@ -1,11 +1,12 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.Users;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -30,5 +31,30 @@ public class UserController {
     @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PutMapping("/{userId}/password")
+    public ResponseEntity<User> updatePassword(
+            @PathVariable String userId,
+            @RequestBody Map<String, String> request) {
+
+        String newPassword = request.get("password");
+        User updatedUser = userService.updatePassword(userId, newPassword);
+        return ResponseEntity.ok(updatedUser);
     }
 }

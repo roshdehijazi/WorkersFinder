@@ -1,4 +1,5 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.Users;
+import FindWorkers.WorkersFinder.Users.EmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.*;
