@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/issues")
 public class IssueController {
@@ -26,6 +28,11 @@ public class IssueController {
     public ResponseEntity<?> createIssue( @PathVariable String issueId){
         Issue finishedIssue=IssueService.isFinished(issueId);
         return ResponseEntity.ok(finishedIssue);
+    }
+    @GetMapping
+    public ResponseEntity<List<Issue>> getAllUsers() {
+        List<Issue> issues = IssueService.getAllIssues();
+        return ResponseEntity.ok(issues);
     }
 
 
