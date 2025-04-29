@@ -16,6 +16,10 @@ public class Issue {
     private String Title;
     @Field("description")
     private String decscription;
+    @Field("coustomerId")
+    private String customerId;
+    @Field("workerId")
+    private String workerId;
 
     @Field("category")
     private Category category;
@@ -28,16 +32,31 @@ public class Issue {
     public Issue() {
     }
 
-    public Issue(String picture, String title, String decscription, Category category, Date startDate) {
+    public Issue(String picture, String title, String decscription, String customerId, Category category, Date startDate) {
         this.picture = picture;
         Title = title;
         this.decscription = decscription;
+        this.customerId = customerId;
         this.category = category;
         this.startDate = startDate;
         this.IsFinished=false;
     }
 
+    public String getCustomerId() {
+        return customerId;
+    }
 
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(String workerId) {
+        this.workerId = workerId;
+    }
 
     public Date getStartDate() {
         return startDate;
