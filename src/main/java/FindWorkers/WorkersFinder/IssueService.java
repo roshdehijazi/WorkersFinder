@@ -24,4 +24,7 @@ public class IssueService {
     public List<Issue> getAllIssues() {
         return issueRepository.findAll();
     }
+    public List<Issue> getAllIssuesFroCustomer(String customerId) {
+        return issueRepository.findAllByCustomerId(customerId);
+    }
 }

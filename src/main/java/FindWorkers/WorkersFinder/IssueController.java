@@ -57,4 +57,9 @@ public class IssueController {
         Issue finishedIssue = issueService.markAsFinished(issueId);
         return ResponseEntity.ok(finishedIssue);
     }
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<Issue>> getAllIssuesForCustomer(@PathVariable String customerId) {
+        List<Issue> issues = issueService.getAllIssuesFroCustomer(customerId);
+        return ResponseEntity.ok(issues);
+    }
 }
