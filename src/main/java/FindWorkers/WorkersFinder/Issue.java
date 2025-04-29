@@ -32,10 +32,14 @@ public class Issue {
     public Issue() {
     }
 
-    public Issue(String picture, String title, String decscription, String customerId, Category category, Date startDate) {
-        this.picture = picture;
+
+
+
+
+    public Issue(String imagePath, String title, String description, Category category, String customerId,Date startDate) {
+        this.picture = imagePath;
         Title = title;
-        this.decscription = decscription;
+        this.decscription = description;
         this.customerId = customerId;
         this.category = category;
         this.startDate = startDate;
