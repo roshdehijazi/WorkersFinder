@@ -27,7 +27,7 @@ public class IssueController {
         // Save image path or handle storing image to file system / cloud
         String imagePath = null;
         if (image != null && !image.isEmpty()) {
-            imagePath = image.getOriginalFilename(); // TODO: save to folder or cloud
+            imagePath = image.getOriginalFilename();
             // For now, we just log or store name
         }
 
