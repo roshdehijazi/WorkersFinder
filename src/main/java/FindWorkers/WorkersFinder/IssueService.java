@@ -1,27 +1,27 @@
 package FindWorkers.WorkersFinder;
 
-import FindWorkers.WorkersFinder.Users.User;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class IssueService {
     @Autowired
-    private IssueRepository IssueRepostiry;
+    private IssueRepository issueRepository;
 
-    public  Issue createIssue(Issue Issue){
-        return IssueRepostiry.save(Issue);
+    public Issue createIssue(Issue issue) {
+        return issueRepository.save(issue);
     }
 
-    public Issue isFinished(String IsuueId){
-        Issue Issue =IssueRepostiry.findById(IsuueId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Issue.setFinished(true);
-        return IssueRepostiry.save(Issue);
+    public Issue markAsFinished(String issueId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+        issue.setFinished(true);
+        return issueRepository.save(issue);
     }
+
     public List<Issue> getAllIssues() {
-        return IssueRepostiry.findAll();
+        return issueRepository.findAll();
     }
 }
