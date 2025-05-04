@@ -33,6 +33,8 @@ public class Issue {
 
     @Field("isFinished")
     private boolean isFinished;
+    @Field("countViewrs")
+    private int countViewrs;
 
     @Field("startDate")
     private Date startDate;
@@ -48,33 +50,78 @@ public class Issue {
         this.customerId = customerId;
         this.startDate = startDate;
         this.isFinished = false;
+        this.countViewrs=0;
     }
 
-    // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public int getCountViewrs() {
+        return countViewrs;
+    }
 
-    public String getPicture() { return picture; }
-    public void setPicture(String picture) { this.picture = picture; }
+    public void setCountViewrs(int countViewrs) {
+        this.countViewrs = countViewrs;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getCustomerId() { return customerId; }
-    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    public String getPicture() {
+        return picture;
+    }
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
-    public String getWorkerId() { return workerId; }
-    public void setWorkerId(String workerId) { this.workerId = workerId; }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public boolean isFinished() { return isFinished; }
-    public void setFinished(boolean finished) { isFinished = finished; }
+    public String getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
-    public Date getStartDate() { return startDate; }
-    public void setStartDate(Date startDate) { this.startDate = startDate; }
+    public String getWorkerId() {
+        return workerId;
+    }
+    public void setWorkerId(String workerId) {
+        this.workerId = workerId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 }
