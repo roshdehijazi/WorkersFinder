@@ -47,9 +47,26 @@ public class IssueController {
         return ResponseEntity.ok(savedIssue);
     }
 
-    @GetMapping
+    @GetMapping("/newer")
     public ResponseEntity<List<Issue>> getAllIssues() {
         List<Issue> issues = issueService.getAllIssues();
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("/older")
+    public ResponseEntity<List<Issue>> getAllIssuesOlder() {
+        List<Issue> issues = issueService.getAllIssuesOlderToNewer();
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("/category/newer")
+    public ResponseEntity<List<Issue>> getAllIssuesByCategoryNewer( @RequestBody Map<String, String> request) {
+        String category=request.get("category");
+        List<Issue>issues=issueService.getAllByCategory(Category.valueOf(category.toUpperCase()));
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("/category/older")
+    public ResponseEntity<List<Issue>> getAllIssuesByCategoryOlder( @RequestBody Map<String, String> request) {
+        String category=request.get("category");
+        List<Issue>issues=issueService.getAllByCategoryOlder(Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issues);
     }
 

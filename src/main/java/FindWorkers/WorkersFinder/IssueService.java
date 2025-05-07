@@ -22,11 +22,17 @@ public class IssueService {
     }
 
     public List<Issue> getAllIssues() {
-        return issueRepository.findAll();
+        return issueRepository.findAllByOrderByStartDateDesc();
     }
     public List<Issue> getAllIssuesFroCustomer(String customerId) {
-        return issueRepository.findAllByCustomerId(customerId);
+        return issueRepository.findByCustomerIdOrderByStartDateDesc(customerId);
     }
+    public List<Issue> getAllIssuesOlderToNewer(){
+        return issueRepository.findAllByOrderByStartDateAsc();
+    }
+
+
+
     public void deleteIssue(String issueId){
         if(!issueRepository.existsById(issueId))
             throw new RuntimeException("User not found with id: " + issueId);
@@ -40,6 +46,12 @@ public class IssueService {
         issue.setCountViewrs(count);
         return issueRepository.save(issue);
 
+    }
+    public List<Issue> getAllByCategory(Category category){
+        return issueRepository.findByCategoryOrderByStartDateDesc(category);
+    }
+    public List<Issue> getAllByCategoryOlder(Category category){
+        return issueRepository.findByCategoryOrderByStartDateAsc(category);
     }
     public Issue addWorker (String issueId,String workerId){
         Issue issue = issueRepository.findById(issueId)

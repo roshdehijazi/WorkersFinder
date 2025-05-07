@@ -59,4 +59,15 @@ public class UserController {
         return userService.updatePassword(userId, newPassword,oldPassword);
 
     }
+    @PutMapping("/{userId}/updateUsername")
+    public User updateUsername(
+            @PathVariable String userId,
+            @RequestBody Map<String, String> request)
+
+    {
+        String username= request.get("username");
+        return userService.updateUsername(userId,username);
+
+    }
+
 }

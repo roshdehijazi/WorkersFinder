@@ -70,5 +70,10 @@ public class User {
     public void setRole(String role) { this.role = role; }
 
     public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category) {
+        if(this.role.equals("Worker"))
+        this.category = category;
+        else
+            this.category=null;
+    }
 }
