@@ -2,7 +2,9 @@ package FindWorkers.WorkersFinder.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -10,14 +12,18 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class User {
 
     @Id
+    private String Id;
+    @Indexed(unique = true)
     @NotBlank(message = "username is required")
     @Field("username")
     @Size(max = 50, message = "Username must be ≤50 characters")
     private String username;
 
+
     @ValidEmail
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
+    @Indexed(unique = true)
     @Field("email")
     private String email;
 
@@ -43,7 +49,13 @@ public class User {
 // Getters and Setters
 
 
+    public String getId() {
+        return Id;
+    }
 
+    public void setId(String id) {
+        Id = id;
+    }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
