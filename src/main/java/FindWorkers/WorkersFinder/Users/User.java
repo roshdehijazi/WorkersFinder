@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class User {
 
     @Id
-    private String Id;
+    private String id;
     @Indexed(unique = true)
     @NotBlank(message = "username is required")
     @Field("username")
@@ -50,11 +50,11 @@ public class User {
 
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+       this. id = id;
     }
 
     public String getUsername() { return username; }

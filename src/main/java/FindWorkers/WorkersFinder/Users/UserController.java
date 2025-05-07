@@ -49,12 +49,14 @@ public class UserController {
 
 
     @PutMapping("/{userId}/password")
-    public ResponseEntity<User> updatePassword(
+    public ResponseEntity<Object> updatePassword(
             @PathVariable String userId,
-            @RequestBody Map<String, String> request) {
+            @RequestBody Map<String, String> request)
 
-        String newPassword = request.get("password");
-        User updatedUser = userService.updatePassword(userId, newPassword);
-        return ResponseEntity.ok(updatedUser);
+    {
+        String oldPassword=request.get("oldPassword");
+        String newPassword = request.get("newPassword");
+        return userService.updatePassword(userId, newPassword,oldPassword);
+
     }
 }
