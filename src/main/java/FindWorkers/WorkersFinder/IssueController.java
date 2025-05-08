@@ -58,17 +58,17 @@ public class IssueController {
         return ResponseEntity.ok(issues);
     }
     @GetMapping("/category/newer")
-    public ResponseEntity<List<Issue>> getAllIssuesByCategoryNewer( @RequestBody Map<String, String> request) {
-        String category=request.get("category");
-        List<Issue>issues=issueService.getAllByCategory(Category.valueOf(category.toUpperCase()));
+    public ResponseEntity<List<Issue>> getAllIssuesByCategoryNewer(@RequestParam String category) {
+        List<Issue> issues = issueService.getAllByCategory(Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issues);
     }
+
     @GetMapping("/category/older")
-    public ResponseEntity<List<Issue>> getAllIssuesByCategoryOlder( @RequestBody Map<String, String> request) {
-        String category=request.get("category");
-        List<Issue>issues=issueService.getAllByCategoryOlder(Category.valueOf(category.toUpperCase()));
+    public ResponseEntity<List<Issue>> getAllIssuesByCategoryOlder(@RequestParam String category) {
+        List<Issue> issues = issueService.getAllByCategoryOlder(Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issues);
     }
+
 
     @PutMapping("/{issueId}/finish")
     public ResponseEntity<Issue> markIssueAsFinished(@PathVariable String issueId) {
