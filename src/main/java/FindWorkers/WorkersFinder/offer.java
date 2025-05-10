@@ -7,9 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+@Document(collection = "offers")
 public class offer {
     @Id
     private String Id;
+
     @Field("description")
     @NotBlank(message = "description is required")
     private String description;
