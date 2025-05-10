@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.issues;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;

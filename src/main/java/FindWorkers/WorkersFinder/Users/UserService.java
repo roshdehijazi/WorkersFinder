@@ -42,7 +42,6 @@ public class UserService {
             return false;
         }
 
-
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
     public ResponseEntity<Object> updatePassword(String userId, String newPassword,String oldPassword) {
@@ -70,6 +69,7 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public User updateUsername(String userId,String newUsername){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

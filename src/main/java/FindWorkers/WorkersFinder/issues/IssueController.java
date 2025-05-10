@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.issues;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -92,11 +92,13 @@ public class IssueController {
         List<Issue> issues = issueService.getAllIssuesFroCustomer(customerId);
         return ResponseEntity.ok(issues);
     }
+
     @DeleteMapping("/{issueId}")
     public ResponseEntity<Issue> deleteIssue(@PathVariable String issueId) {
         issueService.deleteIssue(issueId);
         return ResponseEntity.ok().build();
     }
+
     @PutMapping("/{issueId}/updateImage")
     public ResponseEntity<Issue> updateImage(@PathVariable String issueId ,
                                              @RequestParam(value = "image", required = false) MultipartFile image) {

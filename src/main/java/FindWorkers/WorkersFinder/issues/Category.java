@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.issues;
 
 public enum Category {
     ELECTRICAL,
