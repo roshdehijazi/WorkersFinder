@@ -1,7 +1,6 @@
 package FindWorkers.WorkersFinder;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -10,7 +9,7 @@ import java.util.Date;
 @Document(collection = "offers")
 public class offer {
     @Id
-    private String Id;
+    private String id;
 
     @Field("description")
     @NotBlank(message = "description is required")
@@ -48,11 +47,11 @@ public class offer {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getDescription() {

@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface IssueRepository extends MongoRepository<Issue, String> {
+
         List<Issue> findAllByOrderByStartDateDesc();
         List<Issue> findByCustomerIdOrderByStartDateDesc(String customerId);
         List<Issue> findByWorkerIdOrderByStartDateDesc(String workerId);

@@ -34,7 +34,7 @@ public class IssueService {
 
     public void deleteIssue(String issueId){
         if(!issueRepository.existsById(issueId))
-            throw new RuntimeException("User not found with id: " + issueId);
+            throw new RuntimeException("issue not found with id: " + issueId);
         issueRepository.deleteById(issueId);
     }
 
