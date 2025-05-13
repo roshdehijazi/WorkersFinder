@@ -68,7 +68,7 @@ public class IssueController {
         List<Issue> issues = issueService.getAllByCategoryOlder(Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issues);
     }
-    @GetMapping("/{customerId}")
+    @GetMapping("customer/{customerId}")
     public ResponseEntity<List<Issue>> getAllIssuesForCustomer(@PathVariable String customerId) {
         List<Issue> issues = issueService.getAllIssuesFroCustomer(customerId);
         return ResponseEntity.ok(issues);
