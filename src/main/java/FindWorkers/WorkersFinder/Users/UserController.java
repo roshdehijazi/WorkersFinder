@@ -39,15 +39,11 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-
-
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> findUserById(@PathVariable String userId){
+        User user=userService.findUserById(userId);
+        return ResponseEntity.ok(user);
     }
-
-
     @PutMapping("/{userId}/password")
     public ResponseEntity<Object> updatePassword(
             @PathVariable String userId,
@@ -68,6 +64,11 @@ public class UserController {
         String username= request.get("username");
         return userService.updateUsername(userId,username);
 
+    }
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok().build();
     }
 
 }

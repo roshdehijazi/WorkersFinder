@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.offers;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

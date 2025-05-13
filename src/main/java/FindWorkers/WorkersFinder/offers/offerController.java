@@ -1,21 +1,16 @@
-package FindWorkers.WorkersFinder;
-import FindWorkers.WorkersFinder.issues.Issue;
+package FindWorkers.WorkersFinder.offers;
 import jakarta.validation.Valid;
-import org.apache.coyote.Request;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/offers")
 public class offerController {
     @Autowired
-    private offerService offerService;
+    private FindWorkers.WorkersFinder.offers.offerService offerService;
 
     @PostMapping
     public ResponseEntity<?>createOffer(@Valid @RequestBody offer offer){
@@ -50,6 +45,11 @@ public class offerController {
     @PutMapping("/{offerId}/isFinished")
     public ResponseEntity<?>markAsFinished(@PathVariable String offerId){
         offer offer=offerService.markAsFinished(offerId);
+        return ResponseEntity.ok(offer);
+    }
+    @PutMapping("/{offerId}/discount")
+    public ResponseEntity<offer>requestDiscount(@PathVariable String offerId){
+        offer offer=offerService.requestDiscount(offerId);
         return ResponseEntity.ok(offer);
     }
     @DeleteMapping("/{offerId}")

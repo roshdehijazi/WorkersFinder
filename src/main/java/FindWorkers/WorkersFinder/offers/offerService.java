@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.offers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public class offerService {
     @Autowired
-    private offerRepository offerRepository;
+    private FindWorkers.WorkersFinder.offers.offerRepository offerRepository;
 
     public offer createOffer(offer offer){
         return offerRepository.save(offer);
@@ -39,6 +39,14 @@ public class offerService {
         if(!offerRepository.existsById(offerId))
             throw new RuntimeException("offer not found with id: " + offerId);
         offerRepository.deleteById(offerId);
+    }
+    public offer requestDiscount(String offerId){
+        offer offer=offerRepository.findById(offerId)
+                .orElseThrow(() -> new RuntimeException("offer not found"));
+        double newPrice=offer.getPrice();
+        newPrice=newPrice-(newPrice*10/100);
+        offer.setPrice(newPrice);
+        return offerRepository.save(offer);
     }
 
 }

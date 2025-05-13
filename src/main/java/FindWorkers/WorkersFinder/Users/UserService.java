@@ -69,6 +69,12 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+    public User findUserById(String userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user;
+
+    }
 
     public User updateUsername(String userId,String newUsername){
         User user = userRepository.findById(userId)

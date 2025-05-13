@@ -1,4 +1,4 @@
-package FindWorkers.WorkersFinder;
+package FindWorkers.WorkersFinder.offers;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;

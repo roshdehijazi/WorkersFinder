@@ -23,10 +23,16 @@ public class IssueService {
     }
 
     public List<Issue> getAllIssues() {
+
         return issueRepository.findAllByOrderByStartDateDesc();
     }
     public List<Issue> getAllIssuesFroCustomer(String customerId) {
         return issueRepository.findByCustomerIdOrderByStartDateDesc(customerId);
+    }
+    public Issue findById(String issueId){
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+        return issue;
     }
     public List<Issue> getAllIssuesOlderToNewer(){
         return issueRepository.findAllByOrderByStartDateAsc();

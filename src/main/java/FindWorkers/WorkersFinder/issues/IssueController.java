@@ -68,6 +68,16 @@ public class IssueController {
         List<Issue> issues = issueService.getAllByCategoryOlder(Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issues);
     }
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<Issue>> getAllIssuesForCustomer(@PathVariable String customerId) {
+        List<Issue> issues = issueService.getAllIssuesFroCustomer(customerId);
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("/{issueId}")
+    public ResponseEntity<Issue>findIssueById(@PathVariable String issueId){
+        Issue issue=issueService.findById(issueId);
+        return ResponseEntity.ok(issue);
+    }
 
 
     @PutMapping("/{issueId}/finish")
@@ -87,17 +97,8 @@ public class IssueController {
         Issue issue =issueService.addWorker(issueId,workerId);
         return ResponseEntity.ok(issue);
     }
-    @GetMapping("/{customerId}")
-    public ResponseEntity<List<Issue>> getAllIssuesForCustomer(@PathVariable String customerId) {
-        List<Issue> issues = issueService.getAllIssuesFroCustomer(customerId);
-        return ResponseEntity.ok(issues);
-    }
 
-    @DeleteMapping("/{issueId}")
-    public ResponseEntity<Issue> deleteIssue(@PathVariable String issueId) {
-        issueService.deleteIssue(issueId);
-        return ResponseEntity.ok().build();
-    }
+
 
     @PutMapping("/{issueId}/updateImage")
     public ResponseEntity<Issue> updateImage(@PathVariable String issueId ,
@@ -130,6 +131,12 @@ public class IssueController {
         Issue issue =issueService.updateCategory(issueId,Category.valueOf(category.toUpperCase()));
         return ResponseEntity.ok(issue);
     }
+    @DeleteMapping("/{issueId}")
+    public ResponseEntity<Issue> deleteIssue(@PathVariable String issueId) {
+        issueService.deleteIssue(issueId);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }
