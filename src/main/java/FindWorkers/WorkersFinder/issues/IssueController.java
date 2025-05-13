@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -26,13 +27,9 @@ public class IssueController {
             @RequestParam("category") String category,
             @RequestParam("customerId") String customerId,
             @RequestParam("startDate") String startDateStr,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
+            @RequestParam("file") MultipartFile file) throws IOException {
 
-        String imagePath = null;
-        if (image != null && !image.isEmpty()) {
-            imagePath = image.getOriginalFilename();
-            // Optional: save file to disk here
-        }
+
 
         Date startDate;
         try {
@@ -41,7 +38,7 @@ public class IssueController {
             return ResponseEntity.badRequest().body("Invalid date format: " + startDateStr);
         }
 
-        Issue issue = new Issue(imagePath, title, description, Category.valueOf(category.toUpperCase()), customerId, startDate);
+        Issue issue = new Issue(file.getBytes(), title, description, customerId, Category.valueOf(category.toUpperCase()),startDate);
         Issue savedIssue = issueService.createIssue(issue);
 
         return ResponseEntity.ok(savedIssue);
