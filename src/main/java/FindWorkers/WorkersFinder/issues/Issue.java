@@ -12,9 +12,6 @@ public class Issue {
     @Id
     private String id;
 
-    @Field("picture")
-    private byte[] imageData;
-
     @NotBlank(message = "Title is required")
     @Field("title")
     private String title;
@@ -39,32 +36,25 @@ public class Issue {
     private boolean isAccepted;
     @Field("inProgess")
     private boolean inProgess;
+
     @Field("startDate")
     private Date startDate;
 
     public Issue() {
     }
 
-    public Issue(byte[] imageData, String title, String description, String customerId,  Category category, Date startDate) {
-        this.imageData = imageData;
+
+
+    public Issue(String title, String description, Category category, String customerId, Date startDate) {
         this.title = title;
         this.description = description;
-        this.customerId = customerId;
         this.category = category;
+        this.customerId = customerId;
         this.startDate = startDate;
         this.isFinished = false;
-        this.countViewrs=0;
         this.isAccepted=false;
         this.inProgess=false;
-    }
-
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
+        this.countViewrs=0;
     }
 
     public boolean isAccepted() {

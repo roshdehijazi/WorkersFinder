@@ -18,13 +18,11 @@ public class ImageController {
 
     @PostMapping
     public ResponseEntity<String> uploadImage(
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
+            @RequestParam("issueId") String issueId,
             @RequestParam("file") MultipartFile file) throws IOException {
 
         Image image = new Image();
-        image.setName(name);
-        image.setDescription(description);
+        image.setIssueId(issueId);
         image.setImageData(file.getBytes());
         image.setContentType(file.getContentType());
 
