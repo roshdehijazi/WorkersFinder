@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/issues")
@@ -19,15 +18,37 @@ public class IssueController {
     @Autowired
     private IssueService issueService;
 
-    @PostMapping()
-    public ResponseEntity<?> submitIssue(
+//    @PostMapping()
+//    public ResponseEntity<?> submitIssue(
+//            @RequestParam("title") String title,
+//            @RequestParam("description") String description,
+//            @RequestParam("category") String category,
+//            @RequestParam("customerId") String customerId,
+//            @RequestParam("startDate") String startDateStr) {
+//
+//
+//
+//        Date startDate;
+//        try {
+//            startDate = Date.from(Instant.parse(startDateStr));
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Invalid date format: " + startDateStr);
+//        }
+//
+//        Issue issue = new Issue(title, description, Category.valueOf(category.toUpperCase()), customerId, startDate);
+//        Issue savedIssue = issueService.createIssue(issue);
+//
+//        return ResponseEntity.ok(savedIssue);
+//    }         roshde old post
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> submitIssueWithImages(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("category") String category,
             @RequestParam("customerId") String customerId,
-            @RequestParam("startDate") String startDateStr) {
-
-
+            @RequestParam("startDate") String startDateStr,
+            @RequestParam(value = "files", required = false) List<MultipartFile> files) {
 
         Date startDate;
         try {
@@ -36,11 +57,29 @@ public class IssueController {
             return ResponseEntity.badRequest().body("Invalid date format: " + startDateStr);
         }
 
-        Issue issue = new Issue(title, description, Category.valueOf(category.toUpperCase()), customerId, startDate);
-        Issue savedIssue = issueService.createIssue(issue);
+        List<String> base64Images = new ArrayList<>();
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    String base64 = Base64.getEncoder().encodeToString(bytes);
+                    String mimeType = file.getContentType();
+                    base64Images.add("data:" + mimeType + ";base64," + base64);
+                } catch (IOException e) {
+                    return ResponseEntity.internalServerError().body("Image upload failed: " + e.getMessage());
+                }
+            }
+        }
 
+        Issue issue = new Issue(title, description, Category.valueOf(category.toUpperCase()), customerId, startDate);
+        issue.setImages(base64Images);
+
+        Issue savedIssue = issueService.createIssue(issue);
         return ResponseEntity.ok(savedIssue);
     }
+
+
+
 
     @GetMapping("/newer")
     public ResponseEntity<List<Issue>> getAllIssues() {
@@ -95,16 +134,17 @@ public class IssueController {
 
 
 
-    @PutMapping("/{issueId}/updateImage")
-    public ResponseEntity<Issue> updateImage(@PathVariable String issueId ,
-                                             @RequestParam(value = "image", required = false) MultipartFile image) {
-        String imagePath = null;
-        if (image != null && !image.isEmpty()) {
-            imagePath = image.getOriginalFilename();
-        }
-        Issue issue =issueService.updateImage(issueId,imagePath);
-        return ResponseEntity.ok(issue);
-    }
+//    @PutMapping("/{issueId}/updateImage")
+//    public ResponseEntity<Issue> updateImage(@PathVariable String issueId ,
+//                                             @RequestParam(value = "image", required = false) MultipartFile image) {
+//        String imagePath = null;
+//        if (image != null && !image.isEmpty()) {
+//            imagePath = image.getOriginalFilename();
+//        }
+//        Issue issue =issueService.updateImage(issueId,imagePath);
+//        return ResponseEntity.ok(issue);
+//    } put mapping roshde one
+
     @PutMapping("/{issueId}/updateTitle")
     public ResponseEntity<Issue> updateTitle(@PathVariable String issueId ,
                                              @RequestBody Map<String, String> request) {

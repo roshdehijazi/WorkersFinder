@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "Issue")
 public class Issue {
@@ -36,6 +37,8 @@ public class Issue {
     private boolean isAccepted;
     @Field("inProgess")
     private boolean inProgess;
+    @Field("images")
+    private List<String> images;
 
     @Field("startDate")
     private Date startDate;
@@ -71,6 +74,14 @@ public class Issue {
 
     public void setInProgess(boolean inProgess) {
         this.inProgess = inProgess;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public int getCountViewrs() {
