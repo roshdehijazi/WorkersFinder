@@ -35,7 +35,7 @@ public class ChatService {
         message.setRead(true);
         return messageRepository.save(message);
     }
-    public boolean ifChatExistsByName(String chatName){
-        return messageRepository.existsByName(chatName);
+    public boolean ifChatRoomExistsByName(String chatName){
+        return chatRoomRepository.existsByName(chatName);
     }
 }

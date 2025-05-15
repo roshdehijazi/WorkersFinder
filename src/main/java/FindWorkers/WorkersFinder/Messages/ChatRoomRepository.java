@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ChatRoomRepository extends MongoRepository<ChatRoom, String> {
     List<ChatRoom> findByParticipantIdsContaining(String userId);
+    ChatRoom findByName(String name);
+    boolean existsByName(String name);
 }
