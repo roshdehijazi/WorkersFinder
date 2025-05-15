@@ -14,12 +14,23 @@ public class ChatController {
     }
 
     @PostMapping("/rooms")
-    public ResponseEntity<?> createRoom(@RequestBody ChatRoom chatRoom, @RequestBody Message message) {
-        if(!chatService.ifChatRoomExistsByName(chatRoom.getName())) {
-           chatService.createChatRoom(chatRoom);
+    public ResponseEntity<?> createRoomAndSendMessage(@RequestBody ChatRoomRequest request) {
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setName(request.getName());
+        chatRoom.setParticipantIds(request.getParticipantIds());
+
+        if (!chatService.ifChatRoomExistsByName(chatRoom.getName())) {
+            chatService.createChatRoom(chatRoom);
         }
-        ChatRoom createdChat=chatService.findByName(chatRoom.getName());
+
+        ChatRoom createdChat = chatService.findByName(chatRoom.getName());
+
+        Message message = new Message();
         message.setChatRoomId(createdChat.getId());
+        message.setSenderId(request.getSenderId());
+        message.setContent(request.getContent());
+        message.setTimestamp(request.getTimestamp());
+
         chatService.sendMessage(message);
         return ResponseEntity.ok(message);
     }
