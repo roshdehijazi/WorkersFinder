@@ -1,5 +1,6 @@
 package FindWorkers.WorkersFinder.Messages;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,8 +14,12 @@ public class ChatController {
     }
 
     @PostMapping("/rooms")
-    public ChatRoom createRoom(@RequestBody ChatRoom chatRoom) {
-        return chatService.createChatRoom(chatRoom);
+    public ResponseEntity<?> createRoom(@RequestBody ChatRoom chatRoom, Message message) {
+        if(!chatService.ifChatExistsByName(chatRoom.getName())) {
+           chatService.createChatRoom(chatRoom);
+        }
+        chatService.sendMessage(message);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/rooms/{userId}")
@@ -36,4 +41,5 @@ public class ChatController {
         Message readedMessage=chatService.markAsRead(messageId);
         return readedMessage;
     }
+
 }

@@ -18,28 +18,7 @@ public class IssueController {
     @Autowired
     private IssueService issueService;
 
-//    @PostMapping()
-//    public ResponseEntity<?> submitIssue(
-//            @RequestParam("title") String title,
-//            @RequestParam("description") String description,
-//            @RequestParam("category") String category,
-//            @RequestParam("customerId") String customerId,
-//            @RequestParam("startDate") String startDateStr) {
-//
-//
-//
-//        Date startDate;
-//        try {
-//            startDate = Date.from(Instant.parse(startDateStr));
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Invalid date format: " + startDateStr);
-//        }
-//
-//        Issue issue = new Issue(title, description, Category.valueOf(category.toUpperCase()), customerId, startDate);
-//        Issue savedIssue = issueService.createIssue(issue);
-//
-//        return ResponseEntity.ok(savedIssue);
-//    }         roshde old post
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> submitIssueWithImages(
@@ -77,7 +56,6 @@ public class IssueController {
         Issue savedIssue = issueService.createIssue(issue);
         return ResponseEntity.ok(savedIssue);
     }
-
 
 
 
@@ -132,18 +110,6 @@ public class IssueController {
         return ResponseEntity.ok(issue);
     }
 
-
-
-//    @PutMapping("/{issueId}/updateImage")
-//    public ResponseEntity<Issue> updateImage(@PathVariable String issueId ,
-//                                             @RequestParam(value = "image", required = false) MultipartFile image) {
-//        String imagePath = null;
-//        if (image != null && !image.isEmpty()) {
-//            imagePath = image.getOriginalFilename();
-//        }
-//        Issue issue =issueService.updateImage(issueId,imagePath);
-//        return ResponseEntity.ok(issue);
-//    } put mapping roshde one
 
     @PutMapping("/{issueId}/updateTitle")
     public ResponseEntity<Issue> updateTitle(@PathVariable String issueId ,

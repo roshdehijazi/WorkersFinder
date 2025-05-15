@@ -1,5 +1,6 @@
 package FindWorkers.WorkersFinder.Messages;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -33,5 +34,8 @@ public class ChatService {
                 .orElseThrow(() -> new RuntimeException("message not found"));
         message.setRead(true);
         return messageRepository.save(message);
+    }
+    public boolean ifChatExistsByName(String chatName){
+        return messageRepository.existsByName(chatName);
     }
 }

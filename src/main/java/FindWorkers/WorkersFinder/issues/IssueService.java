@@ -68,20 +68,6 @@ public class IssueService {
         return issueRepository.save(issue);
     }
 
-//    public Issue updateImage (String issueId ,String image){
-//        Issue issue = issueRepository.findById(issueId)
-//                .orElseThrow(() -> new RuntimeException("Issue not found"));
-//        issue.setPicture(image);
-//        return issueRepository.save(issue);
-//    }                                                                             this is roshde method
-
-    public Issue updateImages(String issueId, List<String> imagePaths) {
-        Issue issue = issueRepository.findById(issueId)
-                .orElseThrow(() -> new RuntimeException("Issue not found"));
-        issue.setImages(imagePaths);
-        return issueRepository.save(issue);
-    }
-
 
     public Issue updateTitle (String issueId ,String title){
         Issue issue = issueRepository.findById(issueId)

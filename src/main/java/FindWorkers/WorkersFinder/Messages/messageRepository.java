@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface messageRepository extends MongoRepository<Message, String> {
     List<Message> findByChatRoomIdOrderByTimestamp(String chatRoomId);
+    boolean existsByName(String name);
+    ChatRoom findByName(String name);
 }
