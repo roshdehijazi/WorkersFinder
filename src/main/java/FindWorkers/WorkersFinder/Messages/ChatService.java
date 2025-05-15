@@ -28,4 +28,10 @@ public class ChatService {
     public List<Message> getChatHistory(String chatRoomId) {
         return messageRepository.findByChatRoomIdOrderByTimestamp(chatRoomId);
     }
+    public Message markAsRead(String messageId){
+        Message message=messageRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("message not found"));
+        message.setRead(true);
+        return messageRepository.save(message);
+    }
 }

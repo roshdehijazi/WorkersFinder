@@ -12,6 +12,7 @@ public class Message {
     private String chatRoomId;
     private String senderId;
     private String content;
+    private boolean isRead;
     private Date timestamp = new Date();
 }
 

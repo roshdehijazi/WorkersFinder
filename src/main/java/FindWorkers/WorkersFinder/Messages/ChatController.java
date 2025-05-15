@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;
 
@@ -30,5 +30,10 @@ public class ChatController {
     @GetMapping("/messages/{chatRoomId}")
     public List<Message> getMessages(@PathVariable String chatRoomId) {
         return chatService.getChatHistory(chatRoomId);
+    }
+    @PutMapping("/markAsRead/{messageId}")
+    public Message markAsRead(@PathVariable String messageId){
+        Message readedMessage=chatService.markAsRead(messageId);
+        return readedMessage;
     }
 }
