@@ -38,4 +38,7 @@ public class ChatService {
     public boolean ifChatRoomExistsByName(String chatName){
         return chatRoomRepository.existsByName(chatName);
     }
+    public ChatRoom findByName(String name){
+        return chatRoomRepository.findByName(name);
+    }
 }

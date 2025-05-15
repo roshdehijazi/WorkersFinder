@@ -18,6 +18,8 @@ public class ChatController {
         if(!chatService.ifChatRoomExistsByName(chatRoom.getName())) {
            chatService.createChatRoom(chatRoom);
         }
+        ChatRoom createdChat=chatService.findByName(chatRoom.getName());
+        message.setChatRoomId(createdChat.getId());
         chatService.sendMessage(message);
         return ResponseEntity.ok().build();
     }
