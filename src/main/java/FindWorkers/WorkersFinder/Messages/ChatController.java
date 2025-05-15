@@ -14,7 +14,7 @@ public class ChatController {
     }
 
     @PostMapping("/rooms")
-    public ResponseEntity<?> createRoom(@RequestParam ChatRoom chatRoom, @RequestParam Message message) {
+    public ResponseEntity<?> createRoom(@RequestBody ChatRoom chatRoom, @RequestBody Message message) {
         if(!chatService.ifChatRoomExistsByName(chatRoom.getName())) {
            chatService.createChatRoom(chatRoom);
         }
