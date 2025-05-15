@@ -21,7 +21,7 @@ public class ChatController {
         ChatRoom createdChat=chatService.findByName(chatRoom.getName());
         message.setChatRoomId(createdChat.getId());
         chatService.sendMessage(message);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/rooms/{userId}")
