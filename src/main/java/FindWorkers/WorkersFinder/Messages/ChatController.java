@@ -40,11 +40,6 @@ public class ChatController {
         return chatService.getUserChatRooms(userId);
     }
 
-    @PostMapping("/messages")
-    public Message sendMessage(@RequestBody Message message) {
-        return chatService.sendMessage(message);
-    }
-
     @GetMapping("/messages/{chatRoomId}")
     public List<Message> getMessages(@PathVariable String chatRoomId) {
         return chatService.getChatHistory(chatRoomId);
