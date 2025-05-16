@@ -35,6 +35,12 @@ public class ChatController {
         return ResponseEntity.ok(message);
     }
 
+    @PostMapping("/messages") //send messages independently to existing chat rooms — without creating a room
+    public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
+        Message saved = chatService.sendMessage(message);
+        return ResponseEntity.ok(saved);
+    }
+
     @GetMapping("/rooms/{userId}")
     public List<ChatRoom> getUserRooms(@PathVariable String userId) {
         return chatService.getUserChatRooms(userId);
