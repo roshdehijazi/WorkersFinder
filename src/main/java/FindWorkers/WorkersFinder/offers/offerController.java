@@ -1,4 +1,6 @@
 package FindWorkers.WorkersFinder.offers;
+import FindWorkers.WorkersFinder.Notifications.Notifications;
+import FindWorkers.WorkersFinder.Notifications.NotificationsService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +13,26 @@ import java.util.List;
 public class offerController {
     @Autowired
     private FindWorkers.WorkersFinder.offers.offerService offerService;
+    @Autowired
+    private NotificationsService notificationsService;
 
     @PostMapping
-    public ResponseEntity<?>createOffer(@Valid @RequestBody offer offer){
-        try{
-            offer createdOffer=offerService.createOffer(offer);
+    public ResponseEntity<?> createOffer(@Valid @RequestBody offer offer) {
+        try {
+            offer createdOffer = offerService.createOffer(offer);
+            Notifications notification = new Notifications();
+            notification.setUserId(offer.getCustomerId());
+            notification.setMessage("A worker has sent you a new offer for your issue.");
+            notification.setRead(false);
+
+            notificationsService.createNotification(notification);
+
             return ResponseEntity.ok(createdOffer);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping
     public ResponseEntity<List<offer>>getAllOffers(){
         List<offer>offers=offerService.getAllOffersNewerFirst();
