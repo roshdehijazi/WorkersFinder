@@ -70,5 +70,24 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
+    @PutMapping("/requestUpdatePassword/{userName}")
+    public ResponseEntity<User>requestUpdatePassword(@PathVariable String userName){
+        User user=userService.requestUpdatePassword(userName);
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/checkUpdatePasswordCode/{userName}")
+    public boolean checkUpdatePasswordCode(@PathVariable String userName,@RequestBody Map<String, String> request){
+        String Code=request.get("Code");
+        return userService.checkUpdatePasswordCode(userName,Code);
+
+    }
+    @PutMapping("/ForgetPassword/{userId}")
+    public ResponseEntity<?>ForgetPassword(@PathVariable String userId,@RequestBody Map<String, String> request){
+        String newPassword=request.get("newPassword");
+        User user=userService.ForgetPassword(userId,newPassword);
+        return ResponseEntity.ok(user);
+    }
+
+
 
 }
