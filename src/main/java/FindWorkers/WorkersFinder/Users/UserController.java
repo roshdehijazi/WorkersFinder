@@ -87,6 +87,21 @@ public class UserController {
         User user=userService.ForgetPassword(userId,newPassword);
         return ResponseEntity.ok(user);
     }
+    @PutMapping("/addRating")
+    public ResponseEntity<User>addRating (@RequestBody Rating rating){
+        User user=userService.addRating(rating);
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/getAllRating")
+    public ResponseEntity<List<Rating>> getAllRating(){
+        List<Rating> rating=userService.getAllRating();
+        return ResponseEntity.ok(rating);
+    }
+    @GetMapping("/getAllRating/{workerId}")
+    public ResponseEntity<List<Rating>> getAllRatingForWorker(@PathVariable String workerId){
+        List<Rating> rating=userService.getAllForWorker(workerId);
+        return ResponseEntity.ok(rating);
+    }
 
 
 

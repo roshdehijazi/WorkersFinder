@@ -18,8 +18,6 @@ public class IssueController {
     @Autowired
     private IssueService issueService;
 
-
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> submitIssueWithImages(
             @RequestParam("title") String title,
@@ -90,12 +88,37 @@ public class IssueController {
         Issue issue=issueService.findById(issueId);
         return ResponseEntity.ok(issue);
     }
+    @GetMapping("finishedIssues")
+    public ResponseEntity<List<Issue>>getAllFinishedIssues(){
+        List<Issue>issues=issueService.getAllFinishedIssues();
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("unFinishedIssues")
+    public ResponseEntity<List<Issue>>getAllUnFinishedIssues(){
+        List<Issue>issues=issueService.getAllUnFinishedIssues();
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("AcceptedIssues")
+    public ResponseEntity<List<Issue>>getAllAcceptedIssues(){
+        List<Issue>issues=issueService.getAllAcceptedIssues();
+        return ResponseEntity.ok(issues);
+    }
+    @GetMapping("unAcceptedIssues")
+    public ResponseEntity<List<Issue>>getAllUnAcceptedIssues(){
+        List<Issue>issues=issueService.getAllUnAcceptedIssues();
+        return ResponseEntity.ok(issues);
+    }
 
 
     @PutMapping("/{issueId}/finish")
     public ResponseEntity<Issue> markIssueAsFinished(@PathVariable String issueId) {
         Issue finishedIssue = issueService.markAsFinished(issueId);
         return ResponseEntity.ok(finishedIssue);
+    }
+    @PutMapping("/{issueId}/accepted")
+    public ResponseEntity<Issue>markIssueAsAccepted(@PathVariable String issueId){
+        Issue issue =issueService.markAsAccepted(issueId);
+        return ResponseEntity.ok(issue);
     }
     @PutMapping("/{issueId}/addCount")
     public ResponseEntity<Issue> addCount(@PathVariable String issueId) {

@@ -21,6 +21,24 @@ public class IssueService {
         issue.setFinished(true);
         return issueRepository.save(issue);
     }
+    public Issue markAsAccepted(String issueId){
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new RuntimeException("Issue not found"));
+        issue.setAccepted(true);
+        return issueRepository.save(issue);
+    }
+    public List<Issue>getAllFinishedIssues(){
+        return issueRepository.findByIsFinishedTrue();
+    }
+    public List<Issue>getAllUnFinishedIssues(){
+        return issueRepository.findByIsFinishedFalse();
+    }
+    public List<Issue>getAllAcceptedIssues(){
+        return issueRepository.findByIsAcceptedTrueAndIsFinishedFalse();
+    }
+    public List<Issue>getAllUnAcceptedIssues(){
+        return issueRepository.findByIsAcceptedFalse();
+    }
 
     public List<Issue> getAllIssues() {
 
@@ -75,7 +93,6 @@ public class IssueService {
         issue.setTitle(title);
         return issueRepository.save(issue);
     }
-
 
     public Issue updateCategory (String issueId ,Category category){
         Issue issue = issueRepository.findById(issueId)

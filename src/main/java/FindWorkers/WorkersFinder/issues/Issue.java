@@ -30,8 +30,6 @@ public class Issue {
     private int countViewrs;
     @Field("isAccepted")
     private boolean isAccepted;
-    @Field("inProgess")
-    private boolean inProgess;
     @Field("images")
     private List<String> images;
     @Field("startDate")
@@ -44,7 +42,6 @@ public class Issue {
         this.startDate = startDate;
         this.isFinished = false;
         this.isAccepted=false;
-        this.inProgess=false;
         this.countViewrs=0;
     }
 }
