@@ -17,6 +17,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RandomCodeGenerator randomCodeGenerator;
 
     public User createUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -47,8 +49,7 @@ public class UserService {
     public ResponseEntity<Object> updatePassword(String userId, String newPassword,String oldPassword) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (user != null && authenticate(user.getId(), oldPassword)) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if ( authenticate(user.getId(), oldPassword)) {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
             return ResponseEntity.ok().build();
@@ -56,6 +57,14 @@ public class UserService {
         else{
             return ResponseEntity.status(401).body(null);
         }
+    }
+    public User ForgetPassword(String userId, String newPassword){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdatePasswordCode(null);
+        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public User getUserByUsername(String username) {
@@ -81,6 +90,22 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(newUsername);
         return userRepository.save(user);
+    }
+    public User requestUpdatePassword(String userName){
+        User user = userRepository.findByUsername(userName);
+        String code=randomCodeGenerator.generate(5);
+        user.setUpdatePasswordCode(code);
+        return userRepository.save(user);
+    }
+    public boolean checkUpdatePasswordCode(String userName,String Code){
+        User user = userRepository.findByUsername(userName);
+        System.out.println(Code);
+        System.out.println(user.getUpdatePasswordCode());
+        if(user.getUpdatePasswordCode()==null){
+            return false;
+        }
+        return Code.equals(user.getUpdatePasswordCode());
+
     }
 
 
