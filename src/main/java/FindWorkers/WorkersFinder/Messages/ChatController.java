@@ -3,7 +3,6 @@ package FindWorkers.WorkersFinder.Messages;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/chat")
@@ -26,33 +25,21 @@ public class ChatController {
 
         ChatRoom createdChat = chatService.findByName(chatRoom.getName());
 
-        // 🛑 Do not send a message if the content is empty/null
-        if (request.getContent() != null && !request.getContent().trim().isEmpty()) {
-            Message message = new Message();
-            message.setChatRoomId(createdChat.getId());
-            message.setSenderId(request.getSenderId());
-            message.setContent(request.getContent());
-            message.setTimestamp(request.getTimestamp());
+        Message message = new Message();
+        message.setChatRoomId(createdChat.getId());
+        message.setSenderId(request.getSenderId());
+        message.setContent(request.getContent());
+        message.setTimestamp(request.getTimestamp());
 
-            if (request.getMeta() != null) {
-                message.setMeta(request.getMeta());
-            }
-
-            chatService.sendMessage(message);
-            return ResponseEntity.ok(message);
-        }
-
-        // ✅ Just return the chat room if no message is needed
-        return ResponseEntity.ok(createdChat);
+        chatService.sendMessage(message);
+        return ResponseEntity.ok(message);
     }
 
-
-    @PostMapping("/messages")
+    @PostMapping("/messages") //send messages independently to existing chat rooms — without creating a room
     public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
         Message saved = chatService.sendMessage(message);
         return ResponseEntity.ok(saved);
     }
-
 
     @GetMapping("/rooms/{userId}")
     public List<ChatRoom> getUserRooms(@PathVariable String userId) {
@@ -70,15 +57,6 @@ public class ChatController {
         Message readedMessage=chatService.markAsRead(messageId);
 
         return readedMessage;
-    }
-    @PutMapping("/messages/{messageId}/meta-status")
-    public ResponseEntity<Message> updateMessageMetaStatus(
-            @PathVariable String messageId,
-            @RequestBody Map<String, String> body
-    ) {
-        String status = body.get("status"); // expected: "accepted" or "declined"
-        Message updated = chatService.updateMessageMetaStatus(messageId, status);
-        return ResponseEntity.ok(updated);
     }
 
 }

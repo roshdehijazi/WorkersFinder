@@ -21,7 +21,6 @@ public class WorkersFinderApplication {
 			}
 		};
 	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(WorkersFinderApplication.class, args);
 

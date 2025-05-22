@@ -19,6 +19,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RandomCodeGenerator randomCodeGenerator;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public User createUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -93,20 +95,45 @@ public class UserService {
     }
     public User requestUpdatePassword(String userName){
         User user = userRepository.findByUsername(userName);
-        String code=randomCodeGenerator.generate(5);
+        if(user==null)
+            throw new RuntimeException("user not fount");
+
+        String code=randomCodeGenerator.generate(6);
         user.setUpdatePasswordCode(code);
         return userRepository.save(user);
     }
     public boolean checkUpdatePasswordCode(String userName,String Code){
         User user = userRepository.findByUsername(userName);
-        System.out.println(Code);
-        System.out.println(user.getUpdatePasswordCode());
+        if(user==null)
+            throw new RuntimeException("user not fount");
         if(user.getUpdatePasswordCode()==null){
             return false;
         }
         return Code.equals(user.getUpdatePasswordCode());
+    }
+    public User addRating(Rating rating){
+        User user=userRepository.findById(rating.getWorkerId())
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        if(rating.getRating()>5)
+            throw new RuntimeException("the rating is wrong");
+        ratingRepository.save(rating);
+        long countRating=ratingRepository.countByWorkerId(rating.getWorkerId());
+        long sumRating =ratingRepository.sumRatingByWorkerId(rating.getWorkerId());
+        System.out.println(countRating);
+        System.out.println(sumRating);
+        double Rating = (double) sumRating /countRating;
+        user.setRating(Rating);
+        userRepository.save(user);
+        return user;
 
     }
+    public List<Rating>getAllRating(){
+        return ratingRepository.findAll();
+    }
+    public List<Rating>getAllForWorker(String workerId){
+        return ratingRepository.findByWorkerId(workerId);
+    }
+
 
 
 }

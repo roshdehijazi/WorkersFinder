@@ -27,9 +27,11 @@ public class User {
     @Field("password")
     private String password;
     @Field("role")
-    private String role;
+    private Role role;
     @Field("category")
     private String category;
     @Field("UpdatePasswordCode")
     private String UpdatePasswordCode;
+    @Field("Rating")
+    private double Rating;
 }
