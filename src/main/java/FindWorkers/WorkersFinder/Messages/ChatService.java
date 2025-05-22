@@ -2,6 +2,8 @@ package FindWorkers.WorkersFinder.Messages;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -41,4 +43,17 @@ public class ChatService {
     public ChatRoom findByName(String name){
         return chatRoomRepository.findByName(name);
     }
+
+    public Message updateMessageMetaStatus(String messageId, String status) {
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("Message not found"));
+
+        if (message.getMeta() == null) {
+            message.setMeta(new HashMap<>());
+        }
+        message.getMeta().put("status", status);
+
+        return messageRepository.save(message);
+    }
+
 }

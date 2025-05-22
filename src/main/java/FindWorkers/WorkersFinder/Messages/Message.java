@@ -3,6 +3,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import java.util.Date;
+import java.util.Map;
 
 @Data
 @Document(collection = "messages")
@@ -14,5 +15,7 @@ public class Message {
     private String content;
     private boolean isRead;
     private Date timestamp = new Date();
+    private Map<String, Object> meta;
+
 }
 

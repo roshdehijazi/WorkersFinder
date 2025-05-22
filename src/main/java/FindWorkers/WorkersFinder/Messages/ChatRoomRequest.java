@@ -1,28 +1,21 @@
 package FindWorkers.WorkersFinder.Messages;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+@Setter
+@Getter
 public class ChatRoomRequest {
+    // Getters & Setters
     private String name;
     private List<String> participantIds;
     private String senderId;
     private String content;
     private Date timestamp;
+    private Map<String, Object> meta;
 
-    // Getters & Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public List<String> getParticipantIds() { return participantIds; }
-    public void setParticipantIds(List<String> participantIds) { this.participantIds = participantIds; }
-
-    public String getSenderId() { return senderId; }
-    public void setSenderId(String senderId) { this.senderId = senderId; }
-
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public Date getTimestamp() { return timestamp; }
-    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 }
