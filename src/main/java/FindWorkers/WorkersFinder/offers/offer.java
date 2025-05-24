@@ -29,6 +29,8 @@ public class offer {
     private Date createdAt;
     @Field("isAccepted")
     private boolean isAccepted;
+    @Field("isRated")
+    private boolean isRated;
     @Field("finished")
     private boolean finished;
 }

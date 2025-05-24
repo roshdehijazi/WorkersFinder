@@ -1,13 +1,17 @@
 package FindWorkers.WorkersFinder.Users;
 
 
+import FindWorkers.WorkersFinder.EmailSender.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -21,13 +25,36 @@ public class UserService {
     private RandomCodeGenerator randomCodeGenerator;
     @Autowired
     private RatingRepository ratingRepository;
+    @Autowired
+    private EmailService emailService;
 
     public User createUser(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("name", savedUser.getUsername());
+
+        try {
+            System.out.println("📧 Sending welcome email to: " + savedUser.getEmail());
+
+            emailService.sendHtmlEmail(
+                    savedUser.getEmail(),
+                    "Welcome to FindWorkers!",
+                    "welcomeTemplate",
+                    model
+            );
+            System.out.println("✅ Welcome email sent!");
+        } catch (Exception e) {
+            System.err.println("❌ Failed to send welcome email: " + e.getMessage());
+        }
+
+
+        return savedUser;
     }
+
+
     public void deleteUser(String userId) {
 
         if (!userRepository.existsById(userId)) {
@@ -93,24 +120,57 @@ public class UserService {
         user.setUsername(newUsername);
         return userRepository.save(user);
     }
-    public User requestUpdatePassword(String userName){
+    public User requestUpdatePassword(String userName) {
         User user = userRepository.findByUsername(userName);
-        if(user==null)
-            throw new RuntimeException("user not fount");
-
-        String code=randomCodeGenerator.generate(6);
-        user.setUpdatePasswordCode(code);
-        return userRepository.save(user);
-    }
-    public boolean checkUpdatePasswordCode(String userName,String Code){
-        User user = userRepository.findByUsername(userName);
-        if(user==null)
-            throw new RuntimeException("user not fount");
-        if(user.getUpdatePasswordCode()==null){
-            return false;
+        if (user == null) {
+            throw new RuntimeException("User not found");
         }
-        return Code.equals(user.getUpdatePasswordCode());
+
+        // Generate 6-character reset code and 15-minute expiry
+        String code = randomCodeGenerator.generate(6);
+        Date expiryTime = new Date(System.currentTimeMillis() + 15 * 60 * 1000);
+
+        user.setUpdatePasswordCode(code);
+        user.setUpdatePasswordCodeExpiry(expiryTime);
+        userRepository.save(user); // persist changes to DB
+
+        // Build reset link for frontend
+        String resetLink = "http://localhost:3000/reset-password/" + user.getUsername() + "?code=" + code;
+
+        // Build email model for Thymeleaf template
+        Map<String, Object> model = new HashMap<>();
+        model.put("name", user.getUsername());
+        model.put("resetCode", code);
+        model.put("resetLink", resetLink);
+
+        try {
+            emailService.sendHtmlEmail(
+                    user.getEmail(),
+                    "Reset Your Password",
+                    "passwordReset",
+                    model
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("❌ Failed to send password reset email", e);
+        }
+
+        return user;
     }
+
+
+
+
+    public boolean checkUpdatePasswordCode(String userName, String code){
+        User user = userRepository.findByUsername(userName);
+        if (user == null || user.getUpdatePasswordCode() == null)
+            return false;
+
+        Date now = new Date();
+        return code.equals(user.getUpdatePasswordCode()) &&
+                user.getUpdatePasswordCodeExpiry() != null &&
+                now.before(user.getUpdatePasswordCodeExpiry());
+    }
+
     public User addRating(Rating rating){
         User user=userRepository.findById(rating.getWorkerId())
                 .orElseThrow(() -> new RuntimeException("user not found"));

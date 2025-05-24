@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import java.io.File;
 import java.util.Map;
 
 @Service
@@ -33,22 +35,31 @@ public class EmailService {
         mailSender.send(message);
     }
     public void sendHtmlEmail(String to, String subject, String templateName,
-                              Map<String, Object> templateModel)
-            throws MessagingException {
+                              Map<String, Object> templateModel) throws MessagingException {
 
         Context context = new Context();
         context.setVariables(templateModel);
-
         String htmlContent = templateEngine.process(templateName, context);
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom("WorkersFinder@Service.com");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
 
+        // ✅ Embed logo from resources (adjust path if needed)
+        File logo = new File("src/main/resources/static/logo.png");
+        if (logo.exists()) {
+            helper.addInline("logoImage", logo);
+        } else {
+            System.err.println("⚠ Logo image not found at: " + logo.getAbsolutePath());
+        }
+
         mailSender.send(message);
     }
+
 
 
 

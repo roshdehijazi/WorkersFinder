@@ -2,19 +2,24 @@ package FindWorkers.WorkersFinder.Users;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import FindWorkers.WorkersFinder.Users.UserRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @PostMapping
@@ -70,17 +75,74 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
-    @PutMapping("/requestUpdatePassword/{userName}")
-    public ResponseEntity<User>requestUpdatePassword(@PathVariable String userName){
-        User user=userService.requestUpdatePassword(userName);
-        return ResponseEntity.ok(user);
-    }
-    @GetMapping("/checkUpdatePasswordCode/{userName}")
-    public boolean checkUpdatePasswordCode(@PathVariable String userName,@RequestBody Map<String, String> request){
-        String Code=request.get("Code");
-        return userService.checkUpdatePasswordCode(userName,Code);
+    @GetMapping("/requestUpdatePassword/{userName}")
+    public ResponseEntity<?> verifyResetCode(
+            @PathVariable String userName,
+            @RequestParam String code) {
 
+        System.out.println("🔍 Checking reset for user: " + userName + ", code: " + code);
+
+        User user = userRepository.findByUsername(userName);
+        if (user == null) {
+            System.out.println("❌ User not found in DB");
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        System.out.println("✅ User found: " + user.getUsername());
+        System.out.println("💾 Stored reset code: " + user.getUpdatePasswordCode());
+        System.out.println("⏳ Expiry time: " + user.getUpdatePasswordCodeExpiry());
+
+        if (user.getUpdatePasswordCode() == null || !user.getUpdatePasswordCode().equals(code)) {
+            System.out.println("❌ Provided code does not match or is missing");
+            return ResponseEntity.status(400).body("Invalid reset code");
+        }
+
+        if (user.getUpdatePasswordCodeExpiry() == null || user.getUpdatePasswordCodeExpiry().before(new Date())) {
+            System.out.println("❌ Code has expired");
+            return ResponseEntity.status(410).body("Reset code has expired");
+        }
+
+        System.out.println("✅ Code is valid and not expired");
+        return ResponseEntity.ok("Code is valid");
     }
+
+
+    @GetMapping("/checkUpdatePasswordCode/{userName}")
+    public boolean checkUpdatePasswordCode(
+            @PathVariable String userName,
+            @RequestParam("code") String code) {
+        return userService.checkUpdatePasswordCode(userName, code);
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<?> updatePasswordAfterReset(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String code = request.get("code");
+        String newPassword = request.get("newPassword");
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        if (user.getUpdatePasswordCode() == null || !user.getUpdatePasswordCode().equals(code)) {
+            return ResponseEntity.status(400).body("Invalid code");
+        }
+
+        if (user.getUpdatePasswordCodeExpiry() == null || user.getUpdatePasswordCodeExpiry().before(new Date())) {
+            return ResponseEntity.status(410).body("Code expired");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdatePasswordCode(null); // clear reset code
+        user.setUpdatePasswordCodeExpiry(null);
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Password updated successfully");
+    }
+
+
+
     @PutMapping("/ForgetPassword/{userId}")
     public ResponseEntity<?>ForgetPassword(@PathVariable String userId,@RequestBody Map<String, String> request){
         String newPassword=request.get("newPassword");

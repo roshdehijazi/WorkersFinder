@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
 @Data
 @Document(collection = "users")
 public class User {
@@ -30,8 +33,11 @@ public class User {
     private Role role;
     @Field("category")
     private String category;
-    @Field("UpdatePasswordCode")
-    private String UpdatePasswordCode;
     @Field("Rating")
     private double Rating;
+    @Field("updatePasswordCode")
+    private String updatePasswordCode;
+    @Field("updatePasswordCodeExpiry")
+    private Date updatePasswordCodeExpiry;
+
 }

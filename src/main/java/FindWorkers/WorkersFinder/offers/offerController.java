@@ -57,6 +57,7 @@ public class offerController {
         List<offer>offers=offerService.getAllOffersNewerFirst();
         return ResponseEntity.ok(offers);
     }
+
     @GetMapping("/forIssue")
     public ResponseEntity<List<offer>>getAllOffersForIssue(@RequestParam String issueId){
         List<offer>offers=offerService.getAllOffersByIssueId(issueId);
@@ -72,11 +73,18 @@ public class offerController {
         offer offer=offerService.markAsAccepted(offerId);
         return ResponseEntity.ok(offer);
     }
+
     @PutMapping("/{offerId}/isFinished")
     public ResponseEntity<?>markAsFinished(@PathVariable String offerId){
         offer offer=offerService.markAsFinished(offerId);
         return ResponseEntity.ok(offer);
     }
+    @PutMapping("/{offerId}/markRated")
+    public ResponseEntity<offer> markOfferAsRated(@PathVariable String offerId) {
+        offer updatedOffer = offerService.markAsRated(offerId);
+        return ResponseEntity.ok(updatedOffer);
+    }
+
     @PutMapping("/{offerId}/discount")
     public ResponseEntity<offer>requestDiscount(@PathVariable String offerId){
         offer offer=offerService.requestDiscount(offerId);
