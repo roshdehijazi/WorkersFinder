@@ -42,7 +42,7 @@ public class IssueService {
 
     public List<Issue> getAllIssues() {
 
-        return issueRepository.findAllByOrderByStartDateDesc();
+        return issueRepository.findByIsAcceptedFalseOrderByStartDateDesc();
     }
     public List<Issue> getAllIssuesFroCustomer(String customerId) {
         return issueRepository.findByCustomerIdOrderByStartDateDesc(customerId);
@@ -53,7 +53,8 @@ public class IssueService {
         return issue;
     }
     public List<Issue> getAllIssuesOlderToNewer(){
-        return issueRepository.findAllByOrderByStartDateAsc();
+
+        return issueRepository.findByIsAcceptedFalseOrderByStartDateAsc();
     }
 
     public void deleteIssue(String issueId){
@@ -72,11 +73,11 @@ public class IssueService {
     }
 
     public List<Issue> getAllByCategory(Category category){
-        return issueRepository.findByCategoryOrderByStartDateDesc(category);
+        return issueRepository.findByCategoryAndIsAcceptedFalseOrderByStartDateDesc(category);
     }
 
     public List<Issue> getAllByCategoryOlder(Category category){
-        return issueRepository.findByCategoryOrderByStartDateAsc(category);
+        return issueRepository.findByCategoryAndIsAcceptedFalseOrderByStartDateAsc(category);
     }
 
     public Issue addWorker (String issueId,String workerId){
