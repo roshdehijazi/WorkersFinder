@@ -48,5 +48,11 @@ public class offerService {
         offer.setPrice(newPrice);
         return offerRepository.save(offer);
     }
+    public offer markAsRated(String offerId) {
+        offer offer = offerRepository.findById(offerId)
+                .orElseThrow(() -> new IllegalArgumentException("Offer not found"));
+        offer.setRated(true);
+        return offerRepository.save(offer);
+    }
 
 }

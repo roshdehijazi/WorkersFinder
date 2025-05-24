@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome Email</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fef9e6;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #d6ad60;
+    }
+    p {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Welcome to FindWorkers, <span th:text="${name}">User</span>!</h2>
+  <p>We're excited to have you on board. 🎉</p>
+  <p>You can now log in and start exploring job opportunities or service requests depending on your role.</p>
+  <p>Thanks for joining us!</p>
+  <br />
+  <p>– The FindWorkers Team</p>
+</div>
+</body>
+</html>
