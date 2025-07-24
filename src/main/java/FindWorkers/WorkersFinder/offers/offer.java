@@ -33,4 +33,7 @@ public class offer {
     private boolean isRated;
     @Field("finished")
     private boolean finished;
+    @Field("discounted")
+    private boolean discounted;
+
 }

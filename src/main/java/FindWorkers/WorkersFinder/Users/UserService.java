@@ -29,15 +29,19 @@ public class UserService {
     private EmailService emailService;
 
     public User createUser(User user) {
+        String username=user.getUsername();
+        boolean hasSymbol = username.matches(".*[^a-zA-Z0-9].*");
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        User savedUser = userRepository.save(user);
+        if(hasSymbol)
+            throw new RuntimeException("wrong username");
 
+        User savedUser = userRepository.save(user);
         Map<String, Object> model = new HashMap<>();
         model.put("name", savedUser.getUsername());
 
         try {
-            System.out.println("📧 Sending welcome email to: " + savedUser.getEmail());
+            System.out.println("Sending welcome email to: " + savedUser.getEmail());
 
             emailService.sendHtmlEmail(
                     savedUser.getEmail(),
@@ -45,9 +49,9 @@ public class UserService {
                     "welcomeTemplate",
                     model
             );
-            System.out.println("✅ Welcome email sent!");
+            System.out.println(" Welcome email sent!");
         } catch (Exception e) {
-            System.err.println("❌ Failed to send welcome email: " + e.getMessage());
+            System.err.println("Failed to send welcome email: " + e.getMessage());
         }
 
 
@@ -126,7 +130,6 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
 
-        // Generate 6-character reset code and 15-minute expiry
         String code = randomCodeGenerator.generate(6);
         Date expiryTime = new Date(System.currentTimeMillis() + 15 * 60 * 1000);
 

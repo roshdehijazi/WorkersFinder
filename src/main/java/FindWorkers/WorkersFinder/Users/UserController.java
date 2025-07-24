@@ -80,39 +80,30 @@ public class UserController {
             @PathVariable String userName,
             @RequestParam String code) {
 
-        System.out.println("🔍 Checking reset for user: " + userName + ", code: " + code);
 
         User user = userRepository.findByUsername(userName);
         if (user == null) {
-            System.out.println("❌ User not found in DB");
             return ResponseEntity.status(404).body("User not found");
         }
 
-        System.out.println("✅ User found: " + user.getUsername());
-        System.out.println("💾 Stored reset code: " + user.getUpdatePasswordCode());
-        System.out.println("⏳ Expiry time: " + user.getUpdatePasswordCodeExpiry());
-
         if (user.getUpdatePasswordCode() == null || !user.getUpdatePasswordCode().equals(code)) {
-            System.out.println("❌ Provided code does not match or is missing");
             return ResponseEntity.status(400).body("Invalid reset code");
         }
 
         if (user.getUpdatePasswordCodeExpiry() == null || user.getUpdatePasswordCodeExpiry().before(new Date())) {
-            System.out.println("❌ Code has expired");
             return ResponseEntity.status(410).body("Reset code has expired");
         }
 
-        System.out.println("✅ Code is valid and not expired");
         return ResponseEntity.ok("Code is valid");
     }
 
 
-    @GetMapping("/checkUpdatePasswordCode/{userName}")
-    public boolean checkUpdatePasswordCode(
-            @PathVariable String userName,
-            @RequestParam("code") String code) {
-        return userService.checkUpdatePasswordCode(userName, code);
-    }
+//    @GetMapping("/checkUpdatePasswordCode/{userName}")
+//    public boolean checkUpdatePasswordCode(
+//            @PathVariable String userName,
+//            @RequestParam("code") String code) {
+//        return userService.checkUpdatePasswordCode(userName, code);
+//    }
 
     @PutMapping("/update-password")
     public ResponseEntity<?> updatePasswordAfterReset(@RequestBody Map<String, String> request) {

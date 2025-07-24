@@ -68,6 +68,12 @@ public class offerController {
         List<offer>offers=offerService.getAllOffersByWorkerId(workerId);
         return ResponseEntity.ok(offers);
     }
+    @GetMapping("/{offerId}/getWorkerUserName")
+        public ResponseEntity<String>getWorkerUserName(@PathVariable String offerId){
+            String workerUserName=offerService.getWorkerUserName(offerId);
+            return ResponseEntity.ok(workerUserName);
+        }
+
     @PutMapping("/{offerId}/isAccepted")
     public ResponseEntity<?>markAsAccepted(@PathVariable String offerId){
         offer offer=offerService.markAsAccepted(offerId);
@@ -86,13 +92,24 @@ public class offerController {
     }
 
     @PutMapping("/{offerId}/discount")
-    public ResponseEntity<offer>requestDiscount(@PathVariable String offerId){
-        offer offer=offerService.requestDiscount(offerId);
+    public ResponseEntity<offer>acceptDiscount(@PathVariable String offerId){
+        offer offer=offerService.acceptDiscount(offerId);
         return ResponseEntity.ok(offer);
+    }
+    @PutMapping("/{offerId}/requestDiscount")
+    public ResponseEntity<offer>requestDiscount(@PathVariable String offerId){
+        offer offer=offerService.isDiscounted(offerId);
+        return ResponseEntity.ok(offer);
+
     }
     @DeleteMapping("/{offerId}")
     public ResponseEntity<offer>deleteOfferById(@PathVariable String offerId){
         offerService.deleteOffer(offerId);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("{offerId}/cancelOffer")
+    public ResponseEntity<offer>cancelOffer(@PathVariable String offerId){
+        offerService.cancelOffer(offerId);
         return ResponseEntity.ok().build();
     }
 

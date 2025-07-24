@@ -27,6 +27,7 @@ public class User {
     @Field("email")
     private String email;
     @NotBlank(message = "password is required")
+    @Size(min = 6, message = "password must be min 6 char")
     @Field("password")
     private String password;
     @Field("role")
